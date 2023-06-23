@@ -1,6 +1,7 @@
 import os
 import click
-
+import psycopg2
+import commands
 # csv_path = '/text.csv'
 # phone_number = 1234567899
 # send_alerts = True
@@ -26,24 +27,27 @@ def cli():
 #     pass
 
 #TODO
-# EDIT TEXT PROMPT AND HELPS
-# MENU COMMAND
+#AFTER FUNCTION
+# conditional
+#setup error handling
 # INPUT VALIDATION
-# CALLBACKS FOR QUERIES
-# CHOICE FOR ARGUMENTS
+#Menu
+#data stats/sosby
 
 
 @cli.command()
 @click.argument('type', type=str)
+@click.argument('name', type=str)
 @click.option('-rt', '--rating', 'rating', prompt='what is the rating: ', type=int, help='specify a rating for the task you create, used for sorting and statistics')
 @click.option('-cond', '--conditional', 'conditional', is_flag=True, default=False, show_default=True, help='schedule an item, in a specified area, to be created upon completion of another item')
-def create(type, rating, conditional):
+@click.option('-dsc', '--description', 'description', prompt='what is the description: ', type=str, help='specify a description for the task you create, used for listing and id purposes')
+def create(type, name, rating, conditional, description ):
     """tasks(task), projects(project), or a shopping list(shop)"""
-    click.echo(f'type={type} rating={rating}')
-
+    click.echo(f'type={type} name={name} rating={rating} description={description}')
+    commands.create.create_step(type, name, rating, description)
 
 @cli.command()
-@click.option('-s', '--search', 'search', prompt='what is the name of the item you want to complete: ', help='specify a rating for the task you create, used for sorting and statistics')
+@click.option('-s', '--search', 'search', prompt='what is the name of the item you want to complete: ', help='search for an object to complete, query the configured db')
 def complete(search):
     """search for an item to complete"""
     click.echo(f'complete search for "{search}"')
@@ -58,7 +62,7 @@ def view(type):
 
 # shortcut if you have pk
 @cli.command()
-@click.option('-s', '--search', 'search', prompt='what is the name of the item you want edit to complete: ', help='specify a rating for the task you create, used for sorting and statistics')
+@click.option('-s', '--search', 'search', prompt='what is the name of the item you want edit to complete: ', help='search for an object to edit, query the configured db')
 def edit(search):
     """search for an item to edit"""
     click.echo(f'edit search for "{search}"')
@@ -66,7 +70,7 @@ def edit(search):
 
 # shortcut if you have pk
 @cli.command()
-@click.option('-s', '--search', 'search', prompt='what is the name of the item you want edit to complete: ', help='specify a rating for the task you create, used for sorting and statistics')
+@click.option('-s', '--search', 'search', prompt='what is the name of the item you want edit to complete: ', help='search for an object to delete, query the configured db')
 def delete(search):
     """search for an item to delete"""
     click.echo(f'delete search for "{search}"')
