@@ -1,5 +1,5 @@
 import psycopg2
-
+#WS CHECK
 def create_step(type, name, rating, description):
     conn = psycopg2.connect(dbname="test", user="postgres", password="password", host="localhost", port="5432")
     conn.autocommit = True
