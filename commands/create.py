@@ -1,12 +1,27 @@
 import psycopg2
-#WS CHECK
+import datetime
+
 def create_step(type, name, rating, description):
-    conn = psycopg2.connect(dbname="test", user="postgres", password="password", host="localhost", port="5432")
+    conn = psycopg2.connect(dbname="GoonEEZ", user="postgres", password="password", host="localhost", port="5432")
     conn.autocommit = True
     cur = conn.cursor()
-    sql=f"""INSERT INTO userTask(type, rating, name, description)
-    VALUES({type}, {name}, {rating}, {description})"""
+    ct = datetime.datetime.now()
+    sql=f"""INSERT INTO userItems(type, name, rating, description, created) \
+    VALUES('{type}', '{name}', {rating}, '{description}', '{ct}')"""
     cur.execute(sql)
     conn.close()
     return
 
+
+
+
+#
+# # #TEST
+# conn = psycopg2.connect(dbname="GoonEEZ", user="postgres", password="password", host="localhost", port="5432")
+# conn.autocommit = True
+# cur = conn.cursor()
+# ct = datetime.datetime.now()
+# sql=f"""INSERT INTO userItems(type, name, rating, description, created) \
+#     VALUES('type', 'name', 9, 'here is the description 3', '{ct}')"""
+# cur.execute(sql)
+# conn.close()

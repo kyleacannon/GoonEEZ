@@ -27,6 +27,8 @@ def cli():
 #     pass
 
 #TODO
+#test document
+#package
 #AFTER FUNCTION
 # conditional
 #setup error handling
@@ -47,8 +49,14 @@ def create(type, name, rating, conditional, description ):
     commands.create.create_step(type, name, rating, description)
 
 @cli.command()
+#argument for type
+#argument idparam
+#maybe flag for id
 @click.option('-s', '--search', 'search', prompt='what is the name of the item you want to complete: ', help='search for an object to complete, query the configured db')
 def complete(search):
+    # query where item name or id has the argument in. if one record is returned complete
+    #flag for confirmed
+    # if more than one record return and choose
     """search for an item to complete"""
     click.echo(f'complete search for "{search}"')
 

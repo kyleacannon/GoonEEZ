@@ -1,0 +1,12 @@
+CREATE DATABASE GoonEEZ;
+USE GoonEEZ;
+
+CREATE TABLE userItems (
+    Tag SERIAL PRIMARY KEY,
+    Type char(20) NOT NULL,
+    Name varchar(50) NOT NULL,
+    Rating smallint NOT NULL,
+    Description varchar(255),
+    Created timestamp without time zone,
+    Completed timestamp without time zone
+);
