@@ -4,11 +4,16 @@ import psycopg2
 import commands
 
 # TODO
-# redundancy
+# connection and config module
+# finish logic
+# redundancy -- module seperation
 # parse sql return
 # test document
 # package
-# AFTER FUNCTION
+# TODO AFTER FUNCTION
+# CONFIG
+# DOCKER
+# GITHUB
 # conditional
 # setup error handling
 # INPUT VALIDATION
@@ -19,7 +24,6 @@ import commands
 #options here are for config and overall cli settings
 def cli():
     """Welcome to GoonEEZ"""
-
 
 @cli.command()
 @click.argument('type', type=str)
