@@ -11,6 +11,9 @@ import commands
 # test document
 # package
 # TODO AFTER FUNCTION
+# PRINT TO TXT
+# HAVE BUDGET
+# APPEND TO SCHEDULE
 # CONFIG
 # DOCKER
 # GITHUB
@@ -44,20 +47,18 @@ def create(type, name, rating, conditional, description):
 def complete(type, param, tag):
     """search for an item to complete"""
     if tag:
-        results = commands.complete.completeStep(tag)
-        #complete task
+        commands.complete.completeStep(tag)
     else:
         results = commands.search.searchParam(type, param)
         if len(results) > 1:
             pass
-            # show results
-            # prompt which task would yo ulike to complee
-            #copy index of prompt
-            #complete task
+            for record in results:
+                print(f'Tag:{record[0]} Name:{record[2]} Desc: {record[4]} \n')
+            tag = input(f'Which record are you searching for? Enter only the tag number.')
+            commands.complete.completeStep(tag)
         else:
-            pass
-            # take tag
-            #complete task
+            tag = results[0][0]
+            commands.complete.completeStep(tag)
 
 
 @cli.command()
