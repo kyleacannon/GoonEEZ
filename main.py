@@ -4,12 +4,15 @@ import psycopg2
 import commands
 
 # TODO
+# case insensitivity
+# parse results
 # connection and config module
 # finish logic
 # redundancy -- module seperation
 # parse sql return
 # test document
 # package
+# seperate connection from modules
 # TODO AFTER FUNCTION
 # PRINT TO TXT
 # HAVE BUDGET
@@ -51,7 +54,6 @@ def complete(type, param, tag):
     else:
         results = commands.search.searchParam(type, param)
         if len(results) > 1:
-            pass
             for record in results:
                 print(f'Tag:{record[0]} Name:{record[2]} Desc: {record[4]} \n')
             tag = input(f'Which record are you searching for? Enter only the tag number.')
@@ -63,26 +65,17 @@ def complete(type, param, tag):
 
 @cli.command()
 @click.argument('type', type=str)
-@click.argument('param', type=str)
 @click.option('-t', '--tag', 'tag', is_flag=True, default=False, show_default=True, help='specify that you are providing a tag to search by')
-def view(type):
+#SHOW COMPLETED FLAG
+# @click.option('-t', '--tag', 'tag', is_flag=True, default=False, show_default=True, help='specify that you are providing a tag to search by')
+def view(type, tag):
     """everything(all), tasks(tasks), projects(projects), or your shopping list(shops)"""
-    #SAME THING JUST PRINT
     if tag:
-        results = commands.complete.completeStep(tag)
-        #complete task
+        results = commands.search.searchSpec(tag)
+        print(results)
     else:
-        results = commands.search.searchParam(type, param)
-        if len(results) > 1:
-            pass
-            # show results
-            # prompt which task would yo ulike to complee
-            #copy index of prompt
-            #complete task
-        else:
-            pass
-            # take tag
-            #complete task
+        results = commands.search.searchTypes(type)
+        print(results)
 
 
 # shortcut if you have pk
