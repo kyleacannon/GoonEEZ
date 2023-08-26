@@ -1,7 +1,7 @@
 import psycopg2
 import datetime
 
-def create_step(type, name, rating, description):
+def createStep(type, name, rating, description):
     conn = psycopg2.connect(dbname="GoonEEZ", user="postgres", password="password", host="localhost", port="5432")
     conn.autocommit = True
     cur = conn.cursor()

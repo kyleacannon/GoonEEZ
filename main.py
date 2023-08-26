@@ -1,14 +1,18 @@
 import os
 import click
 import psycopg2
-import commands
+import commands.create
+import commands.search
+import commands.view
+import commands.delete
+import commands.complete
 
 # TODO
+# finish logic
+# redundancy -- module seperation
 # case insensitivity
 # parse results
 # connection and config module
-# finish logic
-# redundancy -- module seperation
 # parse sql return
 # test document
 # package
@@ -34,13 +38,12 @@ def cli():
 @cli.command()
 @click.argument('type', type=str)
 @click.argument('name', type=str)
-@click.option('-rt', '--rating', 'rating', prompt='what is the rating: ', type=int, help='specify a rating for the task you create, used for sorting and statistics')
+@click.option('-rt', '--rating', 'rating', prompt='How is important is this task on a scale of 1-10?', type=int, help='specify a rating for the task you create, used for sorting and statistics')
 # @click.option('-cond', '--conditional', 'conditional', is_flag=True, default=False, show_default=True, help='schedule an item, in a specified area, to be created upon completion of another item')
 @click.option('-dsc', '--description', 'description', prompt='what is the description: ', type=str, help='specify a description for the task you create, used for listing and id purposes')
-def create(type, name, rating, conditional, description):
+def create(type, name, rating, description):
     """tasks(task), projects(project), or a shopping list(shop)"""
-    click.echo(f'type={type} name={name} rating={rating} description={description}')
-    commands.create.create_step(type, name, rating, description)
+    commands.create.createStep(type, name, rating, description)
 
 
 @cli.command()
@@ -67,7 +70,7 @@ def complete(type, param, tag):
 @click.argument('type', type=str)
 @click.option('-t', '--tag', 'tag', is_flag=True, default=False, show_default=True, help='specify that you are providing a tag to search by')
 #SHOW COMPLETED FLAG
-# @click.option('-t', '--tag', 'tag', is_flag=True, default=False, show_default=True, help='specify that you are providing a tag to search by')
+#@click.option('-c', '--completed', 'completed', is_flag=True, default=False, show_default=True, help='flag to indicate the search to retun completed items as well'
 def view(type, tag):
     """everything(all), tasks(tasks), projects(projects), or your shopping list(shops)"""
     if tag:
@@ -83,37 +86,35 @@ def view(type, tag):
 @click.argument('type', type=str)
 @click.argument('param', type=str)
 @click.option('-t', '--tag', 'tag', is_flag=True, default=False, show_default=True, help='specify that you are providing a tag to search by')
+#SHOW COMPLETED FLAG
+#@click.option('-c', '--completed', 'completed', is_flag=True, default=False, show_default=True, help='flag to indicate the search to retun completed items as well'
 def delete(type, param, tag):
     """search for an item to delete"""
-    # same but DELETE
     if tag:
-        results = commands.complete.completeStep(tag)
-        #complete task
+        results = commands.delete.deleteStep(tag)
+        print(results)
     else:
         results = commands.search.searchParam(type, param)
         if len(results) > 1:
-            pass
-            # show results
-            # prompt which task would yo ulike to complee
-            #copy index of prompt
-            #complete task
+            for record in results:
+                print(f'Tag:{record[0]} Name:{record[2]} Desc: {record[4]} \n')
+            tag = input(f'Which record are you searching for? Enter only the tag number.')
+            commands.delete.deleteStep(tag)
         else:
-            pass
-            # take tag
-            #complete task
+            tag = results[0][0]
+            commands.delete.deleteStep(tag)
 
-
-@cli.command()
-@click.argument('function', type=str,)
-def alerts(function):
-    """re-configure alerts(config), enable alerts(enable), disable alerts(disable)"""
-    click.echo(f'alerts with {function}')
-
-
-@cli.command()
-def stats():
-    """see your progress with math and dashboards"""
-    click.echo(f'run stats math and charts')
+# @cli.command()
+# @click.argument('function', type=str,)
+# def alerts(function):
+#     """re-configure alerts(config), enable alerts(enable), disable alerts(disable)"""
+#     click.echo(f'alerts with {function}')
+#
+#
+# @cli.command()
+# def stats():
+#     """see your progress with math and dashboards"""
+#     click.echo(f'run stats math and charts')
 
 
 if __name__ == '__main__':
