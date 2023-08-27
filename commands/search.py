@@ -29,7 +29,7 @@ def searchTypes(type) :
     if type.lower() == 'all':
         sql=f"""SELECT * FROM useritems"""
     else:
-        sql=f"""SELECT * FROM useritems WHERE type={type}"""
+        sql=f"""SELECT * FROM useritems WHERE type='{type}'"""
     cur.execute(sql)
     results = cur.fetchall()
     conn.close()

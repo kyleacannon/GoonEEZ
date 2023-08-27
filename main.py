@@ -72,7 +72,7 @@ def complete(type, param, tag):
 #SHOW COMPLETED FLAG
 #@click.option('-c', '--completed', 'completed', is_flag=True, default=False, show_default=True, help='flag to indicate the search to retun completed items as well'
 def view(type, tag):
-    """everything(all), tasks(tasks), projects(projects), or your shopping list(shops)"""
+    """everything(all), tasks(task), projects(project), or your shopping list(shop)"""
     if tag:
         results = commands.search.searchSpec(tag)
         print(results)
